@@ -1,9 +1,12 @@
 from flask import Flask, request, render_template, jsonify
+from flask_cors import CORS
+from datetime import datetime
 
 app = Flask(__name__)
+CORS(app)
 
 # Store latest sensor data in memory
-latest_data = {"temperature": None, "humidity": None, "latitude": None, "longitude": None}
+latest_data = {"temperature": None, "humidity": None, "latitude": None, "longitude": None, "package_id": None, "timestamp": None}
 
 @app.route("/")
 def index():
@@ -14,7 +17,7 @@ from playsound import playsound
 import threading
 
 def play_beep():
-    playsound("alert_beep.wav")
+    playsound("beep.wav")
 
 @app.route("/update", methods=["POST"])
 def update():
@@ -32,9 +35,9 @@ def update():
         latest_data["latitude"] = data["latitude"]
     if "longitude" in data:
         latest_data["longitude"] = data["longitude"]
-
-    if latest_data["humidity"] and latest_data["humidity"] > 65:
-        threading.Thread(target=play_beep).start()
+    if "package_id" in data:
+        latest_data["package_id"] = data["package_id"]
+    latest_data["timestamp"] = datetime.utcnow().strftime("%d %B, %Y - %H:%M:%S")
 
     return jsonify(latest_data), 200
 

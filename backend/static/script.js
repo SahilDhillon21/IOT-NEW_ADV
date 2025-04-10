@@ -6,10 +6,12 @@ function isMobileDevice() {
 async function fetchSensorData() {
   const res = await fetch("/data");
   const data = await res.json();
-  document.getElementById("temp").textContent = data.temperature ?? "N/A";
-  document.getElementById("humidity").textContent = data.humidity ?? "N/A";
+  document.getElementById("temp").textContent = data.temperature + " ℃"?? "N/A";
+  document.getElementById("humidity").textContent = data.humidity + "%" ?? "N/A";
   document.getElementById("latitude").textContent = data.latitude ?? "N/A";
   document.getElementById("longitude").textContent = data.longitude ?? "N/A";
+  document.getElementById("last_updated").textContent = data.timestamp ?? "N/A";
+  document.getElementById("package_id").textContent = data.package_id ?? "N/A";
 }
 
 function updateLocation() {
@@ -31,9 +33,7 @@ function updateLocation() {
             },
             body: JSON.stringify({ latitude, longitude })
           });
-          console.log("Location sent:", latitude, longitude);
         } catch (error) {
-          console.error("Failed to send location:", error);
         }
       },
       (error) => {

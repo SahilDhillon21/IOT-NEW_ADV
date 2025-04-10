@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Supply Chain Manager</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Dashboard</h2>
+      <nav>
+        <a href="#" onclick="showSection('live')">📊 Live Details</a>
+        <a href="#" onclick="showSection('history')">📈 History</a>
+        <a href="#" onclick="showSection('alerts')">🚨 Alerts</a>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div id="live" class="dashboard-container section">
+        <h1 class="dashboard-header">
+          📦 Live Data for Package: <span id="package_id" style="color: #38bdf8;">--</span>
+        </h1>
+      
+        <!-- Stats Grid Row 1 -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-title">🌡️ Temperature</div>
+            <div class="stat-value" id="temp">--</div>
+          </div>
+          <div class="stat-card humidity">
+            <div class="stat-title">💧 Humidity</div>
+            <div class="stat-value" id="humidity">--</div>
+          </div>
+        </div>
+      
+        <!-- Stats Grid Row 2 -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-title">📍 Latitude</div>
+            <div class="stat-value" id="latitude">--</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">📍 Longitude</div>
+            <div class="stat-value" id="longitude">--</div>
+          </div>
+        </div>
+      
+        <!-- Live Indicator -->
+        <div class="live-indicator" style="text-align: center; margin-top: 20px;">
+          <span
+            style="width: 20px; height: 20px; background-color: green; border-radius: 50%; display: inline-block; animation: blink 1s infinite;">
+          </span>
+          <span style="font-size: 1.5rem; margin-left: 10px;"><b>Live</b></span>
+        </div>
+      
+        <!-- Last Updated -->
+        <div style="text-align: center; margin-top: 15px; font-size: 1rem;">
+          <span>⏱️ Last Updated: <b id="last_updated">--</b></span>
+        </div>
+      </div>
+      
+      <style>
+        @keyframes blink {
+          0% { opacity: 1; }
+          50% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+      </style>
+    
+      <div id="history" class="dashboard-container section" style="display: none;">
+        <h1 class="dashboard-header">History (Last Few Hours)</h1>
+        <div class="charts-container">
+          <div class="chart-box">
+            <h3 class="chart-title">Temperature Chart</h3>
+            <div id="temp-chart">[Chart Here]</div>
+          </div>
+          <div class="chart-box">
+            <h3 class="chart-title">Humidity Chart</h3>
+            <div id="humidity-chart">[Chart Here]</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="alerts" class="dashboard-container section" style="display: none;">
+        <h1 class="dashboard-header">Alerts</h1>
+        <div class="alerts">
+          <div class="stat-box yellow">
+            <p>⚠️ No recent alerts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(section => {
+        section.style.display = 'none';
+      });
+      document.getElementById(id).style.display = 'block';
+    }
+  </script>
+</body>
+</html>
