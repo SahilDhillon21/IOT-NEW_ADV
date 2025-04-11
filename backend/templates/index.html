@@ -104,7 +104,15 @@
       document.querySelectorAll('.section').forEach(section => {
         section.style.display = 'none';
       });
-      document.getElementById(id).style.display = 'block';
+      const selectedSection = document.getElementById(id);
+      if (selectedSection) {
+        selectedSection.style.display = 'block';
+
+        // Reinitialize the map if the "Live" section is shown
+        if (id === "live") {
+          fetchSensorData(); // Fetch data and initialize the map
+        }
+      }
     }
   </script>
 </body>

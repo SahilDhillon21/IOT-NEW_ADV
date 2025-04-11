@@ -49,6 +49,6 @@ function updateLocation() {
 window.onload = () => {
   fetchSensorData();
   updateLocation();
-  setInterval(fetchSensorData, 2000);
-  setInterval(updateLocation, 2000);
+  setInterval(fetchSensorData, 3000);
+  setInterval(updateLocation, 3000);
 };
