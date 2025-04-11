@@ -27,7 +27,20 @@
         <h1 class="dashboard-header">
           📦 Live Data for Package: <span id="package_id" style="color: #38bdf8;">--</span>
         </h1>
-      
+        <div id="live-alert" style="display: none; margin-top: 20px;">
+          <div style="
+            background-color: #ffe4e1;
+            border-left: 6px solid #ff4d4d;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            font-size: 1.1rem;
+            color: #a30000;
+            text-align: center;
+          " id="live-alert-message">
+          </div>
+        </div>
+        
         <!-- Stats Grid Row 1 -->
         <div class="stats-grid">
           <div class="stat-card">
@@ -89,17 +102,48 @@
       </div>
 
       <div id="alerts" class="dashboard-container section" style="display: none;">
-        <h1 class="dashboard-header">Alerts</h1>
-        <div class="alerts">
-          <div class="stat-box yellow">
-            <p>⚠️ No recent alerts.</p>
-          </div>
-        </div>
+        <h1 class="dashboard-header">Recent Alerts</h1>
+        <div class="alerts" id="alerts-container">
+          <!-- Alerts will be injected here -->
+        </div>        
       </div>
     </div>
   </div>
 
   <script>
+    async function loadAlerts() {
+      try {
+        const response = await fetch('/alerts');
+        const alerts = await response.json();
+  
+        const container = document.getElementById('alerts-container');
+        container.innerHTML = ''; // Clear existing alerts
+  
+        if (alerts.length === 0) {
+          container.innerHTML = `
+            <div class="stat-box yellow">
+              <p>⚠️ No recent alerts.</p>
+            </div>
+          `;
+          return;
+        }
+  
+        alerts.forEach(alert => {
+          const card = document.createElement('div');
+          card.className = 'alert-card';
+          card.innerHTML = `
+            <h3>${alert.title || "🚨 Alert"}</h3>
+            <p>${alert.message || "No message provided."}</p>
+            <div class="timestamp">🕒 ${new Date(alert.timestamp).toLocaleString()}</div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Error loading alerts:', error);
+      }
+    }
+  
+    // Show section with alert refresh
     function showSection(id) {
       document.querySelectorAll('.section').forEach(section => {
         section.style.display = 'none';
@@ -107,10 +151,11 @@
       const selectedSection = document.getElementById(id);
       if (selectedSection) {
         selectedSection.style.display = 'block';
-
-        // Reinitialize the map if the "Live" section is shown
+  
         if (id === "live") {
-          fetchSensorData(); // Fetch data and initialize the map
+          fetchSensorData();
+        } else if (id === "alerts") {
+          loadAlerts(); // Fetch alerts when "Alerts" section is shown
         }
       }
     }
