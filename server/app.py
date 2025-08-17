@@ -20,7 +20,7 @@ DB_CONFIG = {
 latest_data = {"temperature": None, "humidity": None, "latitude": None, "longitude": None, "package_id": None, "timestamp": None}
 
 def get_db_connection():
-    """Create and return a database connection"""
+    """No comments"""
     try:
         """Create and return the connection"""
         conn = psycopg2.connect(**DB_CONFIG)
@@ -30,7 +30,7 @@ def get_db_connection():
         return None
 
 def save_package_data(data):
-    """Save package data to database"""
+    """Save package data to database, and return a bool"""
     if not data.get("package_id"):
         return False
     
