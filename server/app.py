@@ -20,7 +20,7 @@ DB_CONFIG = {
 latest_data = {"temperature": None, "humidity": None, "latitude": None, "longitude": None, "package_id": None, "timestamp": None}
 
 def get_db_connection():
-    """Adding some new comments"""
+    """Hiii"""
     try:
         """Create and return the connection"""
         conn = psycopg2.connect(**DB_CONFIG)
