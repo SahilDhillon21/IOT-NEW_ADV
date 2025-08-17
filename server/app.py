@@ -9,7 +9,7 @@ CORS(app)
 
 # Database connection parameters
 DB_CONFIG = {
-    "dbname": "iot_db_db_new_changed",
+    "dbname": "iot_db_db_new_changed_new",
     "user": "postgres",
     "password": "root",
     "host": "localhost",
@@ -20,7 +20,7 @@ DB_CONFIG = {
 latest_data = {"temperature": None, "humidity": None, "latitude": None, "longitude": None, "package_id": None, "timestamp": None}
 
 def get_db_connection():
-    """No comments"""
+    """Adding some new comments"""
     try:
         """Create and return the connection"""
         conn = psycopg2.connect(**DB_CONFIG)
