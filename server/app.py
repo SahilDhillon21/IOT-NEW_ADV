@@ -9,7 +9,7 @@ CORS(app)
 
 # Database connection parameters
 DB_CONFIG = {
-    "dbname": "iot_db",
+    "dbname": "iot_db_db_new_changed",
     "user": "postgres",
     "password": "root",
     "host": "localhost",
