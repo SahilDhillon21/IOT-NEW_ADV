@@ -74,30 +74,6 @@ def save_package_data(data):
     finally:
         conn.close()
 
-def create_alert(package_id, alert_type, value, threshold, message):
-    """Create an alert in the database"""
-    conn = get_db_connection()
-    if not conn:
-        return False
-    
-    try:
-        with conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO alerts 
-                (package_id, type, value, threshold, message, timestamp)
-                VALUES (%s, %s, %s, %s, %s, %s)
-                """,
-                (package_id, alert_type, value, threshold, message, datetime.utcnow())
-            )
-            conn.commit()
-            return True
-    except Exception as e:
-        print(f"Error creating alert: {e}")
-        return False
-    finally:
-        conn.close()
-
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -170,8 +146,6 @@ def get_alerts():
     except Exception as e:
         print(f"Error retrieving alerts: {e}")
         return jsonify({"error": str(e)}), 500
-    finally:
-        conn.close()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
