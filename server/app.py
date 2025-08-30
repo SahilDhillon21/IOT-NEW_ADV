@@ -16,11 +16,10 @@ DB_CONFIG = {
     "port": "5433"
 }
 
-# Store latest sensor data in memory
 latest_data = {"temperature": None, "humidity": None, "latitude": None, "longitude": None, "package_id": None, "timestamp": None}
 
 def get_db_connection():
-    """Hiii there 1"""
+    """db get"""
     try:
         """Create and return the connection"""
         conn = psycopg2.connect(**DB_CONFIG)
@@ -35,8 +34,6 @@ def save_package_data(data):
         return False
     
     conn = get_db_connection()
-    if not conn:
-        return False
     
     try:
         with conn.cursor() as cur:
@@ -50,12 +47,9 @@ def save_package_data(data):
                     data["package_id"],
                     data.get("temperature"),
                     data.get("humidity"),
-                    data.get("latitude"),
-                    data.get("longitude"),
                     datetime.utcnow()
                 )
             )
-            conn.commit()
             
             # Check for temperature alert
             if data.get("temperature") is not None and float(data["temperature"]) > 40:
@@ -69,13 +63,11 @@ def save_package_data(data):
             
             return True
     except Exception as e:
-        print(f"Error saving package data: {e}")
-        return False
+        pass
     finally:
         conn.close()
 
 def create_alert(package_id, alert_type, value, threshold, message):
-    """Create an alert in the database"""
     conn = get_db_connection()
     if not conn:
         return False
@@ -105,11 +97,6 @@ def index():
 @app.route("/update", methods=["POST"])
 def update():
     data = request.json
-
-    if not data:
-        return "Bad Request: No JSON received", 400
-  
-    # Make a copy of data to avoid modifying during iteration
     update_data = {}
     
     # Update stored data
@@ -118,7 +105,7 @@ def update():
         update_data["temperature"] = data["temperature"]
     if "humidity" in data:
         latest_data["humidity"] = data["humidity"]
-        update_data["humidity"] = data["humidity"]
+        latest_data["humidity"] = data["humidity"]
     if "latitude" in data:
         latest_data["latitude"] = data["latitude"]
         update_data["latitude"] = data["latitude"]
