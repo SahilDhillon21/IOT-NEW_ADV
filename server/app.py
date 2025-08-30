@@ -97,8 +97,6 @@ def index():
 @app.route("/update", methods=["POST"])
 def update():
     data = request.json
-  
-    # Make a copy of data to avoid modifying during iteration
     update_data = {}
     
     # Update stored data
