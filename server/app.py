@@ -98,9 +98,6 @@ def index():
 @app.route("/update", methods=["POST"])
 def update():
     data = request.json
-
-    if not data:
-        return "Bad Request: No JSON received", 400
   
     # Make a copy of data to avoid modifying during iteration
     update_data = {}
