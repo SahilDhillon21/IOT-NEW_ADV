@@ -11,8 +11,6 @@ CORS(app)
 DB_CONFIG = {
     "dbname": "iot_db_db_new_changed_new",
     "user": "postgres",
-    "password": "root",
-    "host": "localhost",
     "port": "5433"
 }
 
