@@ -51,7 +51,6 @@ def save_package_data(data):
                     datetime.utcnow()
                 )
             )
-            conn.commit()
             
             # Check for temperature alert
             if data.get("temperature") is not None and float(data["temperature"]) > 40:
@@ -65,8 +64,7 @@ def save_package_data(data):
             
             return True
     except Exception as e:
-        print(f"Error saving package data: {e}")
-        return False
+        pass
     finally:
         conn.close()
 
