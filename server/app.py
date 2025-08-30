@@ -35,8 +35,6 @@ def save_package_data(data):
         return False
     
     conn = get_db_connection()
-    if not conn:
-        return False
     
     try:
         with conn.cursor() as cur:
@@ -50,8 +48,6 @@ def save_package_data(data):
                     data["package_id"],
                     data.get("temperature"),
                     data.get("humidity"),
-                    data.get("latitude"),
-                    data.get("longitude"),
                     datetime.utcnow()
                 )
             )
@@ -75,7 +71,6 @@ def save_package_data(data):
         conn.close()
 
 def create_alert(package_id, alert_type, value, threshold, message):
-    """Create an alert in the database"""
     conn = get_db_connection()
     if not conn:
         return False
@@ -118,7 +113,7 @@ def update():
         update_data["temperature"] = data["temperature"]
     if "humidity" in data:
         latest_data["humidity"] = data["humidity"]
-        update_data["humidity"] = data["humidity"]
+        latest_data["humidity"] = data["humidity"]
     if "latitude" in data:
         latest_data["latitude"] = data["latitude"]
         update_data["latitude"] = data["latitude"]
