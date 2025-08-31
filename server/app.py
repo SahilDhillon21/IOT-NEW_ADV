@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 from datetime import datetime
 import psycopg2
-from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 CORS(app)
@@ -65,8 +64,7 @@ def save_package_data(data):
             
             return True
     except Exception as e:
-        print(f"Error saving package data: {e}")
-        return False
+        pass
     finally:
         conn.close()
 
