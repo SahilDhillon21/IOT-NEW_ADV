@@ -16,7 +16,6 @@ DB_CONFIG = {
     "port": "5433"
 }
 
-# Store latest sensor data in memory
 latest_data = {"temperature": None, "humidity": None, "latitude": None, "longitude": None, "package_id": None, "timestamp": None}
 
 def get_db_connection():
