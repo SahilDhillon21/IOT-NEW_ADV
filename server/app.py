@@ -8,7 +8,7 @@ CORS(app)
 
 # Database connection parameters
 DB_CONFIG = {
-    "dbname": "iotdb",
+    "dbname": "test",
     "user": "postgres",
     "password": "root",
     "host": "localhost",
@@ -57,10 +57,6 @@ def save_package_data(data):
             create_alert(data["package_id"], "Temperature", float(data["temperature"]), 40, 
                          f"High temperature alert: {data['temperature']}°C exceeded threshold of 40°C")
             
-            # Check for humidity alert
-            if data.get("humidity") is not None and float(data["humidity"]) > 65:
-                create_alert(data["package_id"], "Humidity", float(data["humidity"]), 65,
-                             f"High humidity alert: {data['humidity']}% exceeded threshold of 65%")
             
             return True
     except Exception as e:
@@ -123,18 +119,14 @@ def update():
     
     current_time = datetime.utcnow()
     latest_data["timestamp"] = current_time.strftime("%d %B, %Y - %H:%M:%S")
-    
-    # Only try to save to database if we have a package_id
-    if latest_data["package_id"]:
-        # Use the combined data from latest_data to ensure we have all fields
-        db_data = {
-            "package_id": latest_data["package_id"],
-            "temperature": latest_data["temperature"],
-            "humidity": latest_data["humidity"],
-            "latitude": latest_data["longitude"],
-            "longitude": latest_data["longitude"]
-        }
-        save_package_data(db_data)
+    db_data = {
+        "package_id": latest_data["package_id"],
+        "temperature": latest_data["temperature"],
+        "humidity": latest_data["humidity"],
+        "latitude": latest_data["longitude"],
+        "longitude": latest_data["longitude"]
+    }
+    save_package_data(db_data)
 
     return jsonify(latest_data), 200
 
