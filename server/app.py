@@ -8,14 +8,14 @@ CORS(app)
 
 # Database connection parameters
 DB_CONFIG = {
-    "dbname": "iotdb",
+    "dbname": "test_db",
     "user": "postgres",
     "password": "root",
     "host": "localhost",
     "port": "5433"
 }
 
-latest_data = {"temperature": None, "humidity": None, "latitude": None, "longitude": None, "timestamp": None}
+latest_data = {"temperature": None, "latitude": None, "longitude": None, "timestamp": None}
 
 def get_db_connection():
     """A new poitnless comment"""
@@ -110,7 +110,7 @@ def update():
         update_data["temperature"] = data["temperature"]
     if "humidity" in data:
         latest_data["humidity"] = data["humidity"]
-        update_data["humidity"] = data["humidity"]
+        latest_data["humidity"] = data["humidity"]
     if "latitude" in data:
         latest_data["latitude"] = data["latitude"]
         update_data["latitude"] = data["latitude"]
@@ -124,17 +124,7 @@ def update():
     current_time = datetime.utcnow()
     latest_data["timestamp"] = current_time.strftime("%d %B, %Y - %H:%M:%S")
     
-    # Only try to save to database if we have a package_id
-    if latest_data["package_id"]:
-        # Use the combined data from latest_data to ensure we have all fields
-        db_data = {
-            "package_id": latest_data["package_id"],
-            "temperature": latest_data["temperature"],
-            "humidity": latest_data["humidity"],
-            "latitude": latest_data["longitude"],
-            "longitude": latest_data["longitude"]
-        }
-        save_package_data(db_data)
+    save_package_data(db_data)
 
     return jsonify(latest_data), 200
 
