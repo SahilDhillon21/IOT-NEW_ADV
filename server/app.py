@@ -18,11 +18,9 @@ DB_CONFIG = {
 latest_data = {"temperature": None, "humidity": None, "latitude": None, "longitude": None, "timestamp": None}
 
 def get_db_connection():
-    """A new poitnless comment"""
+    """New comment"""
     try:
         """Create and return the connection, maybe"""
-        conn = psycopg2.connect(**DB_CONFIG) # okay
-        return conn
     except Exception as e:
         print(f"Database connection error: {e}")
         return None
